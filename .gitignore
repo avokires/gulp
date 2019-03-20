@@ -1,0 +1,5 @@
+node_modules
+dist
+assets/_images
+assets/_scripts
+assets/bower_components
