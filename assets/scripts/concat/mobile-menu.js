@@ -4,7 +4,7 @@
  * Create an accordion style dropdown.
  */
 
-window.wdsMobileMenu = {};
+window.avsMobileMenu = {};
 ( function( window, $, app ) {
 
 	// Constructor.
@@ -152,4 +152,4 @@ window.wdsMobileMenu = {};
 	// Engage!
 	$( app.init );
 
-}( window, jQuery, window.wdsMobileMenu ) );
+}( window, jQuery, window.avsMobileMenu ) );

@@ -3,7 +3,7 @@
  *
  * @author Haris Zulfiqar
  */
-window.wdsTables = {};
+window.avsTables = {};
 ( function( window, $, app ) {
 
 	// Constructor
@@ -55,4 +55,4 @@ window.wdsTables = {};
 	// Engage
 	$( app.init );
 
-} ( window, jQuery, window.wdsTables ) );
+} ( window, jQuery, window.avsTables ) );

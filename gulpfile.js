@@ -6,6 +6,8 @@ const babel = require('gulp-babel');
 const browserSync = require('browser-sync');
 const cheerio = require('gulp-cheerio');
 const concat = require('gulp-concat');
+const inject = require('gulp-inject');
+const svgInject = require('gulp-svg-inject');
 const cssnano = require('gulp-cssnano');
 const del = require('del');
 const eslint = require('gulp-eslint');
@@ -69,13 +71,6 @@ gulp.task('clean:styles', () =>
 );
 
 /**
- * Delete style.css and style.min.css before we minify and optimize
- */
-gulp.task('clean:scripts', () =>
-	del(['dist/scripts/main.js', 'dist/scripts/main.min.js'])
-);
-
-/**
  * Compile Sass and run stylesheet through PostCSS.
  *
  * https://www.npmjs.com/package/gulp-sass
@@ -136,7 +131,7 @@ gulp.task('cssnano', ['postcss'], () =>
  * Delete the svg-icons.svg before we minify, concat.
  */
 gulp.task('clean:icons', () =>
-	del(['dist/assets/images/svg-icons.svg'])
+	del(['images/svg-icons.svg'])
 );
 
 /**
@@ -165,7 +160,7 @@ gulp.task('svg', ['clean:icons'], () =>
 		.pipe(cheerio({
 			'run': function ($, file) {
 				$('svg').attr('style', 'display:none');
-				$('[fill]').removeAttr('fill');
+				// $('[fill]').removeAttr('fill');
 				$('path').removeAttr('class');
 				$('title').remove();
 			},
@@ -173,7 +168,7 @@ gulp.task('svg', ['clean:icons'], () =>
 		}))
 
 		// Save svg-icons.svg.
-		.pipe(gulp.dest('dist/assets/images/'))
+		.pipe(gulp.dest('./dist/assets/images/'))
 		.pipe(browserSync.stream())
 );
 
@@ -210,8 +205,8 @@ gulp.task('spritesmith', () =>
 		.pipe(plumber({ 'errorHandler': handleErrors }))
 		.pipe(spritesmith({
 			'imgName': 'sprites.png',
-			'cssName': '../../assets/sass/base/_sprites.scss',
-			'imgPath': 'assets/images/sprites.png',
+			'cssName': '../../../assets/sass/base/_sprites.scss',
+			'imgPath': 'dist/assets/images/sprites.png',
 			'algorithm': 'binary-tree'
 		}))
 		.pipe(gulp.dest('dist/assets/images/'))
@@ -344,7 +339,8 @@ gulp.task('sassdoc', function () {
 gulp.task('html:build', () => {
 	gulp.src('./*.html') //Выберем файлы по нужному пути
 		.pipe(rigger()) //Прогоним через rigger
-		.pipe(gulp.dest('./dist/')) //Выплюнем их в папку build
+		.pipe(svgInject())
+		.pipe(gulp.dest('./dist/')) //Выплюнем их в папку dist
 		.pipe(browserSync.stream())
 });
 
